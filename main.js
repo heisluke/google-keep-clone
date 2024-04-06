@@ -1,3 +1,38 @@
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+mongoose.connect('mongodb+srv://lukebamtefa:pXBpbsQwnHLkTuGr@keepclone.3iek8yk.mongodb.net/?retryWrites=true&w=majority&appName=keepClone')
+
+const UserSchema = new mongoose.Schema({  
+  title: String,
+  text: String,
+  color: String,
+  id: Number
+
+})
+
+const UserModel = mongoose.model('User', UserSchema)  
+
+app.get('/getNotes', (req, res) => {
+  UserModel.find({}).then(function (users) {
+    res.json(users)
+  }).catch(function (err) {
+    console.log(err)
+  })
+})
+
+
+app.listen(3001, () => {
+  console.log('Server has started');
+
+});
+
 class App {
   constructor() {
     this.notes = JSON.parse(localStorage.getItem('notes')) || [];
